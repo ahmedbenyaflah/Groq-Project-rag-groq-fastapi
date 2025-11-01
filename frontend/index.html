@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Groq RAG Demo</title>
+</head>
+<body style="font-family: sans-serif; max-width: 600px; margin: 40px auto;">
+  <h2>📘 Groq RAG PDF Chat</h2>
+
+  <input type="file" id="pdf" />
+  <button onclick="uploadPDF()">Upload PDF</button>
+  <p id="status"></p>
+
+  <hr>
+  <textarea id="question" rows="3" cols="50" placeholder="Ask something..."></textarea><br>
+  <button onclick="ask()">Ask</button>
+
+  <h3>Answer:</h3>
+  <div id="answer" style="white-space: pre-wrap;"></div>
+
+  <script>
+    const BACKEND_URL = "http://127.0.0.1:8000";
+
+    async function uploadPDF() {
+      const file = document.getElementById("pdf").files[0];
+      if (!file) return alert("Please select a PDF.");
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      document.getElementById("status").innerText = "Uploading...";
+
+      const res = await fetch(`${BACKEND_URL}/upload_pdf`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      document.getElementById("status").innerText = data.message || "Upload done!";
+    }
+
+    async function ask() {
+      const q = document.getElementById("question").value;
+      if (!q) return alert("Enter a question!");
+
+      const formData = new FormData();
+      formData.append("question", q);
+
+      const res = await fetch(`${BACKEND_URL}/ask`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      document.getElementById("answer").innerText = data.answer || data.error;
+    }
+  </script>
+</body>
+</html>

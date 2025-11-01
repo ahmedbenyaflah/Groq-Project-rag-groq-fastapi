@@ -1,0 +1,19 @@
+fastapi
+uvicorn
+pypdf
+langchain
+langchain-community
+langchain-groq
+sentence-transformers
+faiss-cpu
+# fastapi
+# uvicorn[standard]
+# python-multipart
+# pypdf
+# python-dotenv
+# langchain
+# langchain-community
+# langchain-groq
+# faiss-cpu
+# torch
+# sentence-transformers
